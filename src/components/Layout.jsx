@@ -26,9 +26,10 @@ export default function Layout({ children }) {
   }, [setTicker]);
 
   const logout = () => {
-    clearUser();
-    navigate('/');
-  };
+  clearUser();
+  try { localStorage.removeItem('gpt_token_v2'); } catch {}
+  window.location.href = '/#/';
+};
 
   return (
     <>
