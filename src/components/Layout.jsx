@@ -67,15 +67,20 @@ export default function Layout({ children }) {
             <i className="fas fa-gem" /><span>{me ? (me.diamonds || 0).toLocaleString() : '0'}</span>
           </div>
           {me ? (
-            <button className="btn light sm" onClick={() => navigate('/profile')}>
-              <span className="mini-av">{me.username.charAt(0).toUpperCase()}</span>
-              {me.username}
-            </button>
-          ) : (
-            <button className="btn light sm" onClick={() => document.getElementById('auth-trigger')?.click()}>
-              <i className="fas fa-right-to-bracket" /> Log in
-            </button>
-          )}
+  <>
+    <button className="btn light sm" onClick={() => navigate('/profile')}>
+      <span className="mini-av">{me.username.charAt(0).toUpperCase()}</span>
+      {me.username}
+    </button>
+    <button className="btn light sm" onClick={logout} title="Log out">
+      <i className="fas fa-right-from-bracket" />
+    </button>
+  </>
+) : (
+  <button className="btn light sm" onClick={() => document.getElementById('auth-trigger')?.click()}>
+    <i className="fas fa-right-to-bracket" /> Log in
+  </button>
+)}
         </div>
       </header>
 
