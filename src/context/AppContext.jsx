@@ -25,11 +25,11 @@ export function AppProvider({ children }) {
 }, []);
 
 const clearUser = useCallback(() => {
-  try { localStorage.removeItem(TOKEN_KEY); } catch {}
-  try { sessionStorage.setItem('justLoggedOut', '1'); } catch {}
-  setMe(null);
-}, []);
-      const d = await api('getInitialData', me ? me.id : null);
+  const logout = () => {
+  clearUser();
+  try { localStorage.removeItem('gpt_token_v2'); } catch {}
+  window.location.href = '/#/';
+};
       setShop(d.shopItems || []);
       setWalls(d.offerwalls || []);
       setBoard(d.leaderboard || []);
