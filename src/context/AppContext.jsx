@@ -45,24 +45,23 @@ const clearUser = useCallback(() => {
     const tok = localStorage.getItem(TOKEN_KEY);
     if (!tok) {
       setLoading(false);
-      return;
-    }
-    api('loginWithToken', tok)
-      .then(r => {
-        if (r && r.success) setUser(r.user);
-        else clearUser();
-      })
-      .catch(clearUser)
-      .finally(() => setLoading(false));
-  }, [setUser, clearUser]);
-
-  const value = {
-    me, setUser, clearUser, loading,
-    shop, walls, board, ticker,
-    refreshData, setShop, setWalls, setBoard, setTicker
-  };
-
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
-}
-
-export const useApp = () => useContext(AppContext);
+      useEffect(() => {
+  if (sessionStorage.getItem('justLoggedOut')) {
+    sessionStorage.removeItem('justLoggedOut');
+    try { localStorage.removeItem(TOKEN_KEY); } catch {}
+    setLoading(false);
+    return;
+  }
+  const tok = localStorage.getItem(TOKEN_KEY);
+  if (!tok) {
+    setLoading(false);
+    return;
+  }
+  api('loginWithToken', tok)
+    .then(r => {
+      if (r && r.success) setUser(r.user);
+      else clearUser();
+    })
+    .catch(clearUser)
+    .finally(() => setLoading(false));
+}, [setUser, clearUser]);
