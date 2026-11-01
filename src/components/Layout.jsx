@@ -73,9 +73,20 @@ export default function Layout({ children }) {
       <span className="mini-av">{me.username.charAt(0).toUpperCase()}</span>
       {me.username}
     </button>
-    <button className="btn light sm" onClick={logout} title="Log out">
-      <i className="fas fa-right-from-bracket" />
-    </button>
+<button
+  type="button"
+  className="btn light sm"
+  title="Log out"
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try { localStorage.removeItem('gpt_token_v2'); } catch {}
+    try { sessionStorage.setItem('justLoggedOut', '1'); } catch {}
+    window.location.replace('/#/');
+  }}
+>
+  <i className="fas fa-right-from-bracket" />
+</button>
   </>
 ) : (
   <button className="btn light sm" onClick={() => document.getElementById('auth-trigger')?.click()}>
