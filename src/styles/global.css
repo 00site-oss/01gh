@@ -52,12 +52,12 @@ input:focus-visible,textarea:focus-visible{outline:none}
   .m-brand{display:flex;align-items:center;gap:9px;font:700 19px var(--display);letter-spacing:.02em;text-transform:uppercase}
   .m-brand img{width:30px;height:30px;border-radius:9px;object-fit:contain}
   .topbar h1{display:none}
-  .dock{display:flex;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:50;
+    .dock{display:flex;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:50;
     background:var(--glass);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line2);border-radius:22px;box-shadow:var(--sh);padding:6px;gap:2px}
-  .dock button{flex:1;border:0;background:none;padding:8px 2px;border-radius:16px;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted)}
-  .dock button i{font-size:16px}
-  .dock button.active{background:var(--raised2);color:var(--ink)}
-  .dock button.active i{color:var(--orange)}
+  .dock button,.dock a{flex:1;border:0;background:none;padding:8px 2px;border-radius:16px;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);text-decoration:none}
+  .dock button i,.dock a i{font-size:16px}
+  .dock button.active,.dock a.active{background:var(--raised2);color:var(--ink)}
+  .dock button.active i,.dock a.active i{color:var(--orange)}
 }
 
 /* primitives */
