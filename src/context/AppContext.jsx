@@ -12,24 +12,23 @@ export function AppProvider({ children }) {
   const [ticker, setTicker] = useState([]);
 
   const setUser = useCallback((u) => {
-    setMe(prev => {
-      const tok = (prev && prev.sessionToken) || (u && u.sessionToken) || '';
-      const next = { ...prev, ...u };
-      if (!next.sessionToken) next.sessionToken = tok;
-      if (next.sessionToken) {
-        try { localStorage.setItem(TOKEN_KEY, next.sessionToken); } catch {}
-      }
-      return next;
-    });
-  }, []);
+  setMe(prev => {
+    if (sessionStorage.getItem('justLoggedOut')) return null;
+    const tok = (prev && prev.sessionToken) || (u && u.sessionToken) || '';
+    const next = { ...prev, ...u };
+    if (!next.sessionToken) next.sessionToken = tok;
+    if (next.sessionToken) {
+      try { localStorage.setItem(TOKEN_KEY, next.sessionToken); } catch {}
+    }
+    return next;
+  });
+}, []);
 
-  const clearUser = useCallback(() => {
-    try { localStorage.removeItem(TOKEN_KEY); } catch {}
-    setMe(null);
-  }, []);
-
-  const refreshData = useCallback(async () => {
-    try {
+const clearUser = useCallback(() => {
+  try { localStorage.removeItem(TOKEN_KEY); } catch {}
+  try { sessionStorage.setItem('justLoggedOut', '1'); } catch {}
+  setMe(null);
+}, []);
       const d = await api('getInitialData', me ? me.id : null);
       setShop(d.shopItems || []);
       setWalls(d.offerwalls || []);
