@@ -12,24 +12,27 @@ export function AppProvider({ children }) {
   const [ticker, setTicker] = useState([]);
 
   const setUser = useCallback((u) => {
-  setMe(prev => {
-    if (sessionStorage.getItem('justLoggedOut')) return null;
-    const tok = (prev && prev.sessionToken) || (u && u.sessionToken) || '';
-    const next = { ...prev, ...u };
-    if (!next.sessionToken) next.sessionToken = tok;
-    if (next.sessionToken) {
-      try { localStorage.setItem(TOKEN_KEY, next.sessionToken); } catch {}
-    }
-    return next;
-  });
-}, []);
+    setMe(prev => {
+      if (sessionStorage.getItem('justLoggedOut')) return null;
+      const tok = (prev && prev.sessionToken) || (u && u.sessionToken) || '';
+      const next = { ...prev, ...u };
+      if (!next.sessionToken) next.sessionToken = tok;
+      if (next.sessionToken) {
+        try { localStorage.setItem(TOKEN_KEY, next.sessionToken); } catch {}
+      }
+      return next;
+    });
+  }, []);
 
-const clearUser = useCallback(() => {
-  const logout = () => {
-  clearUser();
-  try { localStorage.removeItem('gpt_token_v2'); } catch {}
-  window.location.href = '/#/';
-};
+  const clearUser = useCallback(() => {
+    try { localStorage.removeItem(TOKEN_KEY); } catch {}
+    try { sessionStorage.setItem('justLoggedOut', '1'); } catch {}
+    setMe(null);
+  }, []);
+
+  const refreshData = useCallback(async () => {
+    try {
+      const d = await api('getInitialData', me ? me.id : null);
       setShop(d.shopItems || []);
       setWalls(d.offerwalls || []);
       setBoard(d.leaderboard || []);
@@ -42,26 +45,41 @@ const clearUser = useCallback(() => {
   }, [me, setUser]);
 
   useEffect(() => {
+    if (window.location.search.includes('logout=1') || window.location.hash.includes('logout=1')) {
+      try { localStorage.clear(); } catch {}
+      try { sessionStorage.clear(); } catch {}
+      setMe(null);
+      setLoading(false);
+      window.history.replaceState(null, '', '/#/');
+      return;
+    }
+    if (sessionStorage.getItem('justLoggedOut')) {
+      sessionStorage.removeItem('justLoggedOut');
+      try { localStorage.removeItem(TOKEN_KEY); } catch {}
+      setLoading(false);
+      return;
+    }
     const tok = localStorage.getItem(TOKEN_KEY);
     if (!tok) {
       setLoading(false);
-      useEffect(() => {
-  if (sessionStorage.getItem('justLoggedOut')) {
-    sessionStorage.removeItem('justLoggedOut');
-    try { localStorage.removeItem(TOKEN_KEY); } catch {}
-    setLoading(false);
-    return;
-  }
-  const tok = localStorage.getItem(TOKEN_KEY);
-  if (!tok) {
-    setLoading(false);
-    return;
-  }
-  api('loginWithToken', tok)
-    .then(r => {
-      if (r && r.success) setUser(r.user);
-      else clearUser();
-    })
-    .catch(clearUser)
-    .finally(() => setLoading(false));
-}, [setUser, clearUser]);
+      return;
+    }
+    api('loginWithToken', tok)
+      .then(r => {
+        if (r && r.success) setUser(r.user);
+        else clearUser();
+      })
+      .catch(clearUser)
+      .finally(() => setLoading(false));
+  }, [setUser, clearUser]);
+
+  const value = {
+    me, setUser, clearUser, loading,
+    shop, walls, board, ticker,
+    refreshData, setShop, setWalls, setBoard, setTicker
+  };
+
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+}
+
+export const useApp = () => useContext(AppContext);
