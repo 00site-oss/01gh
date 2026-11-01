@@ -25,14 +25,6 @@ export default function Layout({ children }) {
     return () => clearInterval(id);
   }, [setTicker]);
 
-  const doLogout = () => {
-    clearUser();
-    localStorage.clear();
-    sessionStorage.clear();
-    window.location.href = '/#/';
-    setTimeout(() => window.location.reload(true), 50);
-  };
-
   return (
     <>
       <div className="bg" aria-hidden="true" />
@@ -75,8 +67,16 @@ export default function Layout({ children }) {
                 <span className="mini-av">{me.username.charAt(0).toUpperCase()}</span>
                 {me.username}
               </button>
-              <button type="button" className="btn light sm" onClick={doLogout} title="Log out">
-                <i className="fas fa-right-from-bracket" /> Logout
+              <button
+                type="button"
+                className="btn light sm"
+                onClick={() => {
+                  try { localStorage.clear(); } catch {}
+                  try { sessionStorage.clear(); } catch {}
+                  window.location.href = '/#/?logout=1';
+                }}
+              >
+                Logout
               </button>
             </>
           ) : (
