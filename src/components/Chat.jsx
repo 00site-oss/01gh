@@ -6,7 +6,10 @@ export default function Chat({ open, onClose }) {
   const { me } = useApp();
   const [tab, setTab] = useState('chat');
   const [messages, setMessages] = useState([]);
+  const [supportMsgs, setSupportMsgs] = useState([]);
   const [text, setText] = useState('');
+  const [supText, setSupText] = useState('');
+  const [supBusy, setSupBusy] = useState(false);
   const bodyRef = useRef(null);
 
   useEffect(() => {
@@ -18,8 +21,14 @@ export default function Chat({ open, onClose }) {
   }, [open, tab]);
 
   useEffect(() => {
+    if (!open || tab !== 'support' || !me) return;
+    const load = () => api('getSupportMessages', me.id).then(m => setSupportMsgs(m || [])).catch(() => {});
+    load();
+  }, [open, tab, me]);
+
+  useEffect(() => {
     if (bodyRef.current) bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
-  }, [messages]);
+  }, [messages, supportMsgs, tab]);
 
   const send = async () => {
     if (!me || !text.trim()) return;
@@ -28,6 +37,25 @@ export default function Chat({ open, onClose }) {
     const r = await api('sendChatMessage', me.id, me.username, v);
     if (r?.success) {
       api('getChatMessages').then(m => setMessages(m || []));
+    }
+  };
+
+  const sendSupport = async () => {
+    if (!me || !supText.trim() || supBusy) return;
+    setSupBusy(true);
+    try {
+      const r = await api('sendSupportMessage', me.id, supText.trim());
+      if (r?.success) {
+        setSupText('');
+        const m = await api('getSupportMessages', me.id);
+        setSupportMsgs(m || []);
+      } else {
+        alert(r?.error || 'Failed to send');
+      }
+    } catch (e) {
+      alert('Send failed');
+    } finally {
+      setSupBusy(false);
     }
   };
 
@@ -63,7 +91,43 @@ export default function Chat({ open, onClose }) {
             <ul><li>Be respectful</li><li>No spam or advertising</li><li>No harassment</li><li>English preferred</li></ul>
           </div>
         )}
-        {tab === 'support' && <div className="muted">Support form coming soon (use the original for full support).</div>}
+        {tab === 'support' && (
+          !me ? (
+            <div className="empty">Log in to contact support.</div>
+          ) : (
+            <>
+              <div style={{ marginBottom: 12 }}>
+                <textarea
+                  className="input"
+                  value={supText}
+                  onChange={e => setSupText(e.target.value)}
+                  placeholder="Describe your issue..."
+                  rows={3}
+                  style={{ marginBottom: 8, resize: 'vertical' }}
+                  maxLength={1000}
+                />
+                <button className="btn sm block" onClick={sendSupport} disabled={supBusy || !supText.trim()}>
+                  {supBusy ? 'Sending...' : 'Send to Support'}
+                </button>
+              </div>
+              <div>
+                {supportMsgs.length ? supportMsgs.map((x, i) => (
+                  <div key={i} className="msg" style={{ background: x.fromAdmin ? 'rgba(255,122,26,.12)' : 'var(--raised)' }}>
+                    <div className="msg-main">
+                      <div className="who">
+                        {x.fromAdmin ? 'Admin' : 'You'}
+                        <span className="ts">{x.timestamp}</span>
+                      </div>
+                      <div className="tx">{x.message}</div>
+                    </div>
+                  </div>
+                )) : (
+                  <p className="muted" style={{ textAlign: 'center', marginTop: 12 }}>No support messages yet.</p>
+                )}
+              </div>
+            </>
+          )
+        )}
       </div>
       {tab === 'chat' && (
         <div className="chat-in">
