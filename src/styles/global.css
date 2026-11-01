@@ -308,9 +308,10 @@ body{font-size:14px}
 .topnav .brand{margin:0;font-size:24px;font-weight:700;letter-spacing:-.02em;gap:10px}
 .topnav .brand img{width:36px;height:36px}
 .tn-links{display:flex;align-items:center;gap:2px;margin-left:12px}
-.tn-links .nav-btn{flex-direction:column;gap:4px;width:auto;min-width:64px;padding:8px 12px;font-size:11px;font-weight:600;text-align:center;border-radius:12px;box-shadow:none}
-.tn-links .nav-btn i{width:auto;font-size:19px}
-.tn-links .nav-btn.active{background:rgba(255,122,26,.12);box-shadow:none;color:var(--ink)}
+.tn-links .nav-btn,.tn-links a,.tn-links button{flex-direction:column;gap:4px;width:auto;min-width:64px;padding:8px 12px;font-size:11px;font-weight:600;text-align:center;border-radius:12px;box-shadow:none;text-decoration:none;background:none;border:0;color:var(--muted);display:flex;align-items:center;justify-content:center}
+.tn-links .nav-btn i,.tn-links a i,.tn-links button i{width:auto;font-size:19px}
+.tn-links .nav-btn.active,.tn-links a.active,.tn-links button.active{background:rgba(255,122,26,.12);box-shadow:none;color:var(--ink)}
+.tn-links .nav-btn:hover,.tn-links a:hover,.tn-links button:hover{background:var(--hover);color:var(--ink)}
 .tn-right{margin-left:auto;display:flex;align-items:center;gap:10px}
 .tn-right #sideAuth{width:auto;padding:8px 14px;border-radius:12px;background:var(--raised);border-color:transparent;gap:8px}
 .topbar{display:none}
