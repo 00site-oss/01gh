@@ -1,4 +1,4 @@
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#1a110b;--card:#231810;--raised:#2e2016;--raised2:#3d2b1e;
   --ink:#fdf6f0;--muted:#b79c88;--line:#38281c;--line2:#4c3827;
@@ -52,12 +52,29 @@ input:focus-visible,textarea:focus-visible{outline:none}
   .m-brand{display:flex;align-items:center;gap:9px;font:700 19px var(--display);letter-spacing:.02em;text-transform:uppercase}
   .m-brand img{width:30px;height:30px;border-radius:9px;object-fit:contain}
   .topbar h1{display:none}
-  .dock{display:flex;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:50;
-    background:var(--glass);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line2);border-radius:22px;box-shadow:var(--sh);padding:6px;gap:2px}
-  .dock button,.dock a{flex:1;border:0;background:none;padding:8px 2px;border-radius:16px;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);text-decoration:none}
+  .dock{
+    display:flex;position:fixed;left:10px;right:10px;
+    bottom:calc(10px + env(safe-area-inset-bottom));z-index:50;
+    background:rgba(26,17,11,.9);
+    -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;
+    box-shadow:0 12px 40px -8px rgba(0,0,0,.6);
+    padding:4px;gap:2px;
+  }
+  .dock button,.dock a{
+    flex:1;border:0;background:none;
+    padding:8px 2px;border-radius:14px;
+    font-size:10px;font-weight:600;
+    display:flex;flex-direction:column;align-items:center;gap:2px;
+    color:#b79c88;text-decoration:none;
+    transition:all .15s ease;
+  }
   .dock button i,.dock a i{font-size:16px}
-  .dock button.active,.dock a.active{background:var(--raised2);color:var(--ink)}
-  .dock button.active i,.dock a.active i{color:var(--orange)}
+  .dock button.active,.dock a.active{
+    background:rgba(255,122,26,.15);color:#fff;
+  }
+  .dock button.active i,.dock a.active i{color:#ff8a2e}
 }
 
 /* primitives */
