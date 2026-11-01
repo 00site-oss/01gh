@@ -7,7 +7,7 @@ import { api } from '../utils/api';
 const SITE_LOGO = 'https://i.postimg.cc/0j2KJMXM/Screenshot-2026-10-29-at-6-20-50-PM-removebg-preview.png';
 
 export default function Layout({ children }) {
-  const { me, clearUser, ticker, setTicker } = useApp();
+  const { me, clearUser, setTicker } = useApp();
   const navigate = useNavigate();
   const [chatOn, setChatOn] = useState(false);
 
@@ -25,11 +25,13 @@ export default function Layout({ children }) {
     return () => clearInterval(id);
   }, [setTicker]);
 
-  const logout = () => {
-  clearUser();
-  try { localStorage.removeItem('gpt_token_v2'); } catch {}
-  window.location.href = '/#/';
-};
+  const doLogout = () => {
+    clearUser();
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.href = '/#/';
+    setTimeout(() => window.location.reload(true), 50);
+  };
 
   return (
     <>
@@ -68,39 +70,26 @@ export default function Layout({ children }) {
             <i className="fas fa-gem" /><span>{me ? (me.diamonds || 0).toLocaleString() : '0'}</span>
           </div>
           {me ? (
-  <>
-    <button className="btn light sm" onClick={() => navigate('/profile')}>
-      <span className="mini-av">{me.username.charAt(0).toUpperCase()}</span>
-      {me.username}
-    </button>
-<button
-  type="button"
-  className="btn light sm"
-  title="Log out"
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    try { localStorage.removeItem('gpt_token_v2'); } catch {}
-    try { sessionStorage.setItem('justLoggedOut', '1'); } catch {}
-    window.location.replace('/#/');
-  }}
->
-  <i className="fas fa-right-from-bracket" />
-</button>
-  </>
-) : (
-  <button className="btn light sm" onClick={() => document.getElementById('auth-trigger')?.click()}>
-    <i className="fas fa-right-to-bracket" /> Log in
-  </button>
-)}
+            <>
+              <button className="btn light sm" onClick={() => navigate('/profile')}>
+                <span className="mini-av">{me.username.charAt(0).toUpperCase()}</span>
+                {me.username}
+              </button>
+              <button type="button" className="btn light sm" onClick={doLogout} title="Log out">
+                <i className="fas fa-right-from-bracket" /> Logout
+              </button>
+            </>
+          ) : (
+            <button className="btn light sm" onClick={() => document.getElementById('auth-trigger')?.click()}>
+              <i className="fas fa-right-to-bracket" /> Log in
+            </button>
+          )}
         </div>
       </header>
 
       <div className="app">
         <main className="main">
-          <div id="tickerBox">
-            {/* Ticker rendered by Earn or global if needed */}
-          </div>
+          <div id="tickerBox" />
           {children}
           <footer className="site-footer">
             <div className="links">
