@@ -87,9 +87,9 @@ export default function Layout({ children }) {
           {children}
           <footer className="site-footer">
             <div className="links">
-              <a href="/tos">Terms of Service</a>
-              <a href="/privacy">Privacy Policy</a>
-              <a href="/help">Help</a>
+              <NavLink to="/tos">Terms of Service</NavLink>
+              <NavLink to="/privacy">Privacy Policy</NavLink>
+              <NavLink to="/help">Help</NavLink>
             </div>
             <p className="copy">© {new Date().getFullYear()} 01GH. All rights reserved.</p>
             <p className="note">Diamonds have no cash value until a reward is approved and paid. Offerwalls are operated by third-party networks.</p>

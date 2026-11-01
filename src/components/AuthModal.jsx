@@ -13,6 +13,7 @@ export default function AuthModal({ onClose }) {
     e.preventDefault();
     if (!username || !password) return setErr('Enter both fields.');
     setBusy(true);
+    setErr('');
     try {
       const r = await api('loginUser', username.trim(), password.trim());
       if (r && r.success) {
@@ -22,7 +23,7 @@ export default function AuthModal({ onClose }) {
         setErr(r?.error || 'Invalid username or password');
       }
     } catch (e) {
-      setErr('Server error');
+      setErr(e?.message || 'Server error');
     } finally {
       setBusy(false);
     }
