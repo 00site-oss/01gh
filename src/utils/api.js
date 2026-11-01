@@ -20,14 +20,24 @@ export async function api(fn, ...args) {
   }
 
   // Fallback for standalone hosting
+  // Use text/plain to avoid CORS preflight (Apps Script does not handle OPTIONS well)
   try {
     const res = await fetch(EXEC_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      redirect: 'follow',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ fn, args })
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
+    if (!res.ok) {
+      const text = await res.text().catch(() => '');
+      throw new Error(`HTTP ${res.status}${text ? ': ' + text.slice(0, 200) : ''}`);
+    }
+    const text = await res.text();
+    try {
+      return JSON.parse(text);
+    } catch {
+      throw new Error('Server returned non-JSON: ' + text.slice(0, 200));
+    }
   } catch (err) {
     console.error('API call failed:', fn, err);
     throw err;
