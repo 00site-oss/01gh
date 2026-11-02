@@ -48,32 +48,48 @@ export default function Profile() {
 
   return (
     <>
-      <div className="card">
-        <div className="prof-head">
-          <div className="avatar">{me.username.charAt(0).toUpperCase()}</div>
+      <div className="card" style={{ padding: 24 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
+          <div style={{
+            width: 56, height: 56, borderRadius: 16,
+            background: 'linear-gradient(135deg,#ff8a2e,#ff7a1a)',
+            color: '#1c0f06', font: '700 24px Space Grotesk,system-ui',
+            display: 'flex', alignItems: 'center', justifyContent: 'center'
+          }}>{me.username.charAt(0).toUpperCase()}</div>
           <div>
-            <h2>{me.username}</h2>
-            {me.isAdmin ? <span className="tag pending">Administrator</span> : <span className="tag">Member</span>}
+            <h2 style={{ margin: 0, fontSize: 22 }}>{me.username}</h2>
+            <span className="tag" style={{ marginTop: 4 }}>{me.isAdmin ? 'Admin' : 'Member'}</span>
           </div>
         </div>
-        <div className="stat-grid">
-          <div className="stat"><b>{(me.diamonds || 0).toLocaleString()}</b><span>Available</span></div>
-          <div className="stat"><b>{hold.toLocaleString()}</b><span>On hold</span></div>
-          <div className="stat"><b>{(me.totalEarned || 0).toLocaleString()}</b><span>Earned total</span></div>
-          <div className="stat"><b>{me.level || 1}</b><span>Level</span></div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(110px,1fr))', gap: 10 }}>
+          <div style={{ background: 'rgba(255,255,255,.04)', borderRadius: 12, padding: '14px 10px', textAlign: 'center' }}>
+            <div style={{ font: '700 20px Space Grotesk,system-ui' }}>{(me.diamonds || 0).toLocaleString()}</div>
+            <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Available</div>
+          </div>
+          <div style={{ background: 'rgba(255,255,255,.04)', borderRadius: 12, padding: '14px 10px', textAlign: 'center' }}>
+            <div style={{ font: '700 20px Space Grotesk,system-ui' }}>{hold.toLocaleString()}</div>
+            <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>On hold</div>
+          </div>
+          <div style={{ background: 'rgba(255,255,255,.04)', borderRadius: 12, padding: '14px 10px', textAlign: 'center' }}>
+            <div style={{ font: '700 20px Space Grotesk,system-ui' }}>{(me.totalEarned || 0).toLocaleString()}</div>
+            <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Earned</div>
+          </div>
+          <div style={{ background: 'rgba(255,255,255,.04)', borderRadius: 12, padding: '14px 10px', textAlign: 'center' }}>
+            <div style={{ font: '700 20px Space Grotesk,system-ui' }}>{me.level || 1}</div>
+            <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Level</div>
+          </div>
+          <div style={{ background: 'rgba(255,255,255,.04)', borderRadius: 12, padding: '14px 10px', textAlign: 'center' }}>
+            <div style={{ font: '700 20px Space Grotesk,system-ui' }}>{rate}%</div>
+            <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Rate</div>
+          </div>
+          <div style={{ background: 'rgba(255,255,255,.04)', borderRadius: 12, padding: '14px 10px', textAlign: 'center' }}>
+            <div style={{ font: '700 20px Space Grotesk,system-ui' }}>{days}</div>
+            <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Days</div>
+          </div>
         </div>
-        <div className="stat-grid" style={{ marginTop: 10 }}>
-          <div className="stat"><b>{rate}%</b><span>Inactivity rate</span></div>
-          <div className="stat"><b>{days}</b><span>Days since join</span></div>
-          <div className="stat"><b>{coverage}%</b><span>Daily covered</span></div>
-          <div className="stat"><b>{canOut ? 'Yes' : `${toCover}%`}</b><span>{canOut ? 'Cashout OK' : 'Still to cover'}</span></div>
-        </div>
-        <p className="muted" style={{ marginTop: 12, fontSize: 13 }}>
-          Rate starts at 2.5% × days since join. Earn 500 pts = −1% total. Convert 500 available diamonds = −1% daily. Cashouts unlock when total rate ≤ 2.5%.
-        </p>
       </div>
 
-      <h2 className="sec-title">Account</h2>
+      <h2 className="sec-title" style={{ marginTop: 24 }}>Account</h2>
       <div className="card">
         <div className="act-row">
           <span className="ic"><i className="fas fa-clock-rotate-left" /></span>
