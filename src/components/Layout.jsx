@@ -99,17 +99,16 @@ export default function Layout({ children }) {
         </div>
       </header>
 
-      {/* Mobile bar under header */}
+      {/* Mobile bar under header — logo is in header, this is the row under it */}
       <div className="mobile-bar">
-        <div className="pill"><i className="fas fa-gem" /><span>{me ? (me.diamonds || 0).toLocaleString() : '0'}</span></div>
         {me ? (
           <>
             <div style={{ position: 'relative' }}>
-              <button className="btn light sm" onClick={() => setUserMenu(v => !v)}>
+              <button className="btn light sm" onClick={() => setUserMenu(v => !v)} style={{ padding: '6px 8px' }}>
                 <span className="mini-av">{me.username.charAt(0).toUpperCase()}</span>
               </button>
               {userMenu && (
-                <div className="user-dd">
+                <div className="user-dd" style={{ left: 0, right: 'auto' }}>
                   <div className="dd-lab">On hold</div>
                   <div className="dd-val"><i className="fas fa-lock" /> {(me.holdBalance || 0).toLocaleString()}</div>
                   <div className="dd-note">Releases after 30 days</div>
@@ -118,11 +117,12 @@ export default function Layout({ children }) {
                 </div>
               )}
             </div>
+            <div className="pill"><i className="fas fa-gem" /><span>{(me.diamonds || 0).toLocaleString()}</span></div>
             <button type="button" className="btn light sm" onClick={() => {
               try { localStorage.clear(); } catch {}
               try { sessionStorage.clear(); } catch {}
               window.location.href = '/#/?logout=1';
-            }}>Logout</button>
+            }}><i className="fas fa-right-from-bracket" /></button>
           </>
         ) : (
           <button className="btn light sm" onClick={() => document.getElementById('auth-trigger')?.click()}>Log in</button>
