@@ -13,6 +13,7 @@ export function AppProvider({ children }) {
 
   const setUser = useCallback((u) => {
     setMe(prev => {
+      // Do not restore a session if the user just logged out
       if (sessionStorage.getItem('justLoggedOut')) return null;
       const tok = (prev && prev.sessionToken) || (u && u.sessionToken) || '';
       const next = { ...prev, ...u };
@@ -45,22 +46,16 @@ export function AppProvider({ children }) {
   }, [me, setUser]);
 
   useEffect(() => {
-    const hash = window.location.hash || '';
-    const search = window.location.search || '';
-    const forceLogout = hash.includes('logout=1') || search.includes('logout=1') || sessionStorage.getItem('justLoggedOut');
-
-    if (forceLogout) {
+    // Check logout cookie first
+    const cookies = document.cookie || '';
+    if (cookies.includes('logged_out=1')) {
       try { localStorage.clear(); } catch {}
       try { sessionStorage.clear(); } catch {}
+      document.cookie = 'logged_out=; Max-Age=0; path=/';
       setMe(null);
       setLoading(false);
-      // Clean URL
-      if (hash.includes('logout') || search.includes('logout')) {
-        window.history.replaceState(null, '', '/#/');
-      }
       return;
     }
-
     const tok = localStorage.getItem(TOKEN_KEY);
     if (!tok) {
       setLoading(false);
