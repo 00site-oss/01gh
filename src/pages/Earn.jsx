@@ -97,7 +97,6 @@ export default function Earn() {
         <small>Available balance</small>
         <div className="big"><i className="fas fa-gem" />{(me.diamonds || 0).toLocaleString()}</div>
         <div className="hero-row">
-          {hold > 0 && <span className="hero-chip"><i className="fas fa-lock" />{hold.toLocaleString()} on hold</span>}
           <span className="hero-chip"><i className="fas fa-chart-line" />{(me.totalEarned || 0).toLocaleString()} earned</span>
           <span className="hero-chip"><i className="fas fa-trophy" />Level {me.level || 1}</span>
           <span className="hero-chip"><i className="fas fa-percent" />{rate}% · {days}d</span>
