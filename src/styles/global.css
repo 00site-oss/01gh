@@ -179,15 +179,21 @@ input, textarea, select { font-size: 16px !important; }
 .mobile-bar{display:none !important}
 @media(max-width:899px){
   .desktop-only{display:none !important}
-  .mobile-bar{
-    display:flex !important;align-items:center;justify-content:center;gap:10px;
-    padding:8px 14px 10px;
-    background:rgba(26,17,11,.95);
-    border-bottom:1px solid rgba(255,255,255,.06);
+  .topnav{
+    flex-wrap:nowrap;height:auto;padding:16px 14px 8px;
+    justify-content:center;background:transparent;border:0;
   }
-  .topnav{flex-wrap:nowrap;height:56px;padding:0 14px}
-  .topnav .brand{width:auto;margin:0;justify-content:flex-start}
+  .topnav .brand{width:100%;justify-content:center;margin:0}
+  .topnav .brand img{height:40px}
   .tn-links{display:none}
+  .mobile-bar{
+    display:flex !important;align-items:center;justify-content:center;gap:12px;
+    padding:8px 14px 12px;
+    background:transparent;
+    border:0;
+  }
+  .mobile-bar .pill{padding:6px 10px}
+  .mobile-bar .btn{padding:8px 10px;border-radius:10px}
 }
 
 /* user dropdown — fixed */
