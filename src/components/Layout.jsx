@@ -129,21 +129,22 @@ export default function Layout({ children }) {
         )}
       </div>
 
+      {ticker && ticker.length > 0 && (
+        <div className="ticker">
+          <div className="ticker-track">
+            {ticker.concat(ticker).map((t, i) => (
+              <div key={i} className="tk">
+                <span className="tk-av">{(t.username || '?').charAt(0).toUpperCase()}</span>
+                <span className="tk-name">{t.username}</span>
+                <span className="tk-amt">{t.detail || t.action}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="app">
         <main className="main">
-          {ticker && ticker.length > 0 && (
-            <div className="ticker">
-              <div className="ticker-track">
-                {ticker.concat(ticker).map((t, i) => (
-                  <div key={i} className="tk">
-                    <span className="tk-av">{(t.username || '?').charAt(0).toUpperCase()}</span>
-                    <span className="tk-name">{t.username}</span>
-                    <span className="tk-amt">{t.detail || t.action}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
           {children}
           <footer className="site-footer">
             <div className="links">
