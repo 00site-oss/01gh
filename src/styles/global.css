@@ -164,17 +164,65 @@ label.l{display:block;font-size:13px;font-weight:600;margin:0 0 6px;color:var(--
 @keyframes sh{to{background-position:-200% 0}}
 @media(prefers-reduced-motion:reduce){.ticker-track,.tk-dot,.skel{animation:none}.bar>div,.btn,.wall{transition:none}html{scroll-behavior:auto}}
 
-/* ticker */
-.ticker{overflow:hidden;border:1px solid var(--line);border-radius:14px;background:var(--card);margin-bottom:18px;position:relative}
+/* prevent iOS zoom on inputs */
+input, textarea, select { font-size: 16px !important; }
+
+/* user dropdown */
+.user-dd{position:absolute;right:0;top:110%;z-index:200;background:var(--card);border:1px solid var(--line2);border-radius:12px;padding:12px;min-width:180px;box-shadow:var(--sh)}
+.user-dd .dd-lab{font-size:12px;color:var(--muted);margin-bottom:4px}
+.user-dd .dd-val{font-weight:700;font-size:16px}
+.user-dd .dd-val i{color:var(--orange);margin-right:6px}
+.user-dd .dd-note{font-size:11px;color:var(--muted);margin-top:2px}
+.user-dd hr{border:0;border-top:1px solid var(--line);margin:10px 0}
+
+/* mobile bar under header — desktop hidden */
+.mobile-bar{display:none !important}
+@media(max-width:899px){
+  .desktop-only{display:none !important}
+  .mobile-bar{
+    display:flex !important;align-items:center;justify-content:center;gap:10px;
+    padding:8px 14px 10px;
+    background:rgba(26,17,11,.95);
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .topnav{flex-wrap:nowrap;height:56px;padding:0 14px}
+  .topnav .brand{width:auto;margin:0;justify-content:flex-start}
+  .tn-links{display:none}
+}
+
+/* user dropdown — fixed */
+.user-dd{
+  position:absolute !important;right:0;top:calc(100% + 6px);z-index:300;
+  background:#2e2016;border:1px solid #4c3827;border-radius:12px;
+  padding:12px;min-width:160px;box-shadow:0 12px 32px rgba(0,0,0,.5);
+}
+.user-dd .dd-lab{font-size:11px;color:#b79c88;margin-bottom:2px}
+.user-dd .dd-val{font-weight:700;font-size:15px;color:#fff}
+.user-dd .dd-val i{color:#ff7a1a;margin-right:6px}
+.user-dd .dd-note{font-size:10px;color:#b79c88;margin-top:2px}
+.user-dd hr{border:0;border-top:1px solid #38281c;margin:8px 0}
+
+/* ticker under header like GrindBux */
+.ticker{
+  overflow:hidden;border:0;border-radius:0;background:#1a110b;
+  margin:0;position:relative;height:40px;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
 .ticker::before,.ticker::after{content:"";position:absolute;top:0;bottom:0;width:48px;z-index:2;pointer-events:none}
-.ticker::before{left:0;background:linear-gradient(90deg,var(--card),transparent)}
-.ticker::after{right:0;background:linear-gradient(270deg,var(--card),transparent)}
-.ticker-track{display:flex;width:max-content;animation:tk 40s linear infinite;gap:0}
-.tk{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;white-space:nowrap;font-size:13px;font-weight:500;border-right:1px solid var(--line)}
-.tk strong{font-weight:700}
-.tk b{color:var(--orange);font-weight:800}
-.tk .muted,.tk span.muted{color:var(--muted);font-size:12px;margin-left:6px}
-.tk-dot{width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 3px rgba(255,122,26,.2);display:inline-block;margin-right:4px;animation:pulse 1.6s ease infinite}
+.ticker::before{left:0;background:linear-gradient(90deg,#1a110b,transparent)}
+.ticker::after{right:0;background:linear-gradient(270deg,#1a110b,transparent)}
+.ticker-track{display:flex;width:max-content;animation:tk 40s linear infinite;gap:6px;align-items:center;height:100%;padding:0 12px}
+.tk{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:3px 10px 3px 3px;
+  background:#2e2016;
+  border:1px solid #3d2b1e;
+  border-radius:8px;
+  white-space:nowrap;font-size:12px;font-weight:500;color:#ead8c9;
+}
+.tk-av{width:22px;height:22px;border-radius:6px;background:#ff7a1a;color:#1c0f06;font:700 11px 'Space Grotesk',system-ui;display:inline-flex;align-items:center;justify-content:center}
+.tk-name{font-weight:600;color:#fff}
+.tk-amt{color:#ff8a2e;font-weight:700;margin-left:4px}
 @keyframes tk{to{transform:translateX(-50%)}}
 @keyframes pulse{50%{opacity:.5}}
 @keyframes pop{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:none}}
