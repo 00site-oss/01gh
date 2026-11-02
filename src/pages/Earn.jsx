@@ -93,20 +93,6 @@ export default function Earn() {
 
   return (
     <>
-      <div className="card hero">
-        <small>Available balance</small>
-        <div className="big"><i className="fas fa-gem" />{(me.diamonds || 0).toLocaleString()}</div>
-        <div className="hero-row">
-          <span className="hero-chip"><i className="fas fa-chart-line" />{(me.totalEarned || 0).toLocaleString()} earned</span>
-          <span className="hero-chip"><i className="fas fa-trophy" />Level {me.level || 1}</span>
-          <span className="hero-chip"><i className="fas fa-percent" />{rate}% · {days}d</span>
-          <span className={`hero-chip ${canOut ? 'ok' : 'warn'}`}>
-            <i className={`fas ${canOut ? 'fa-circle-check' : 'fa-lock'}`} />
-            {canOut ? 'Cashouts unlocked' : `Cover ${toCover}% more`}
-          </span>
-        </div>
-      </div>
-
       <div className="sec-title"><i className="fas fa-bolt" style={{ color: 'var(--orange)' }} /> Ways to earn</div>
       <div className="cols2">
         {walls.map(w => {
