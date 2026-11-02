@@ -104,7 +104,7 @@ export default function Layout({ children }) {
         {me ? (
           <>
             <div style={{ position: 'relative' }}>
-              <button className="btn light sm" onClick={() => setUserMenu(v => !v)} style={{ padding: '6px 8px' }}>
+              <button className="btn light sm" onClick={() => setUserMenu(v => !v)} style={{ padding: '6px 8px', background: 'rgba(255,255,255,.06)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 10 }}>
                 <span className="mini-av">{me.username.charAt(0).toUpperCase()}</span>
               </button>
               {userMenu && (
@@ -117,12 +117,16 @@ export default function Layout({ children }) {
                 </div>
               )}
             </div>
-            <div className="pill"><i className="fas fa-gem" /><span>{(me.diamonds || 0).toLocaleString()}</span></div>
+            <div className="pill" style={{ padding: '6px 12px' }}>
+              <i className="fas fa-gem" /><span>{(me.diamonds || 0).toLocaleString()}</span>
+            </div>
             <button type="button" className="btn light sm" onClick={() => {
               try { localStorage.clear(); } catch {}
               try { sessionStorage.clear(); } catch {}
               window.location.href = '/#/?logout=1';
-            }}><i className="fas fa-right-from-bracket" /></button>
+            }} style={{ padding: '8px 10px', background: 'rgba(255,255,255,.06)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 10 }}>
+              <i className="fas fa-right-from-bracket" />
+            </button>
           </>
         ) : (
           <button className="btn light sm" onClick={() => document.getElementById('auth-trigger')?.click()}>Log in</button>
