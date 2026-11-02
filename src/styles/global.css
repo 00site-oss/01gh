@@ -1,4 +1,4 @@
-{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#1a110b;--card:#231810;--raised:#2e2016;--raised2:#3d2b1e;
   --ink:#fdf6f0;--muted:#b79c88;--line:#38281c;--line2:#4c3827;
@@ -94,7 +94,7 @@ input:focus-visible,textarea:focus-visible{outline:none}
 .btn.yellow{background:var(--yellow);color:#2b1a00}
 .btn.block{width:100%}
 .btn.sm{padding:6px 12px;font-size:13px;border-radius:9px}
-.input{width:100%;padding:11px 13px;border:1px solid var(--line2);border-radius:12px;background:var(--raised);color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s}
+.input{width:100%;padding:11px 13px;border:1px solid var(--line2);border-radius:12px;background:var(--raised);color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s;font-size:16px}
 .input::placeholder{color:#6b6b82}
 .input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,122,26,.14)}
 label.l{display:block;font-size:13px;font-weight:600;margin:0 0 6px;color:var(--muted)}
@@ -396,11 +396,11 @@ body{font-size:14px}
   .toast-wrap{left:calc(50% - 160px)}
 }
 @media(max-width:899px){
-  .topnav{position:relative;z-index:80;flex-wrap:wrap;height:auto;padding:14px 14px 10px;justify-content:center;gap:12px}
-  .topnav .brand{width:100%;justify-content:center;font-size:26px}
+  .topnav{position:relative;z-index:80;flex-wrap:wrap;height:auto;padding:12px 14px;justify-content:center;gap:0}
+  .topnav .brand{width:100%;justify-content:center;font-size:26px;margin-bottom:8px}
   .tn-links{display:none}
-  .tn-right{margin:0;width:100%;justify-content:center}
-  .main{padding-top:12px}
+  .tn-right{margin:0;width:100%;justify-content:center;padding-top:4px}
+  .main{padding-top:8px}
 }
 
 /* ticker as player chips */
