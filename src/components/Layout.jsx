@@ -88,7 +88,8 @@ export default function Layout({ children }) {
               <button type="button" className="btn light sm" onClick={() => {
                 try { localStorage.clear(); } catch {}
                 try { sessionStorage.clear(); } catch {}
-                window.location.href = '/#/?logout=1';
+                document.cookie = 'logged_out=1; Max-Age=10; path=/';
+                window.location.href = '/';
               }}>Logout</button>
             </>
           ) : (
@@ -123,7 +124,8 @@ export default function Layout({ children }) {
             <button type="button" className="btn light sm" onClick={() => {
               try { localStorage.clear(); } catch {}
               try { sessionStorage.clear(); } catch {}
-              window.location.href = '/#/?logout=1';
+              document.cookie = 'logged_out=1; Max-Age=10; path=/';
+              window.location.href = '/';
             }} style={{ padding: '8px 10px', background: 'rgba(255,255,255,.06)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 10 }}>
               <i className="fas fa-right-from-bracket" />
             </button>
