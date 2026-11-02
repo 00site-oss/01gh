@@ -7,9 +7,10 @@ import { api } from '../utils/api';
 const SITE_LOGO = 'https://i.postimg.cc/0j2KJMXM/Screenshot-2026-10-29-at-6-20-50-PM-removebg-preview.png';
 
 export default function Layout({ children }) {
-  const { me, clearUser, setTicker } = useApp();
+  const { me, clearUser, ticker, setTicker } = useApp();
   const navigate = useNavigate();
   const [chatOn, setChatOn] = useState(false);
+  const [userMenu, setUserMenu] = useState(false);
 
   useEffect(() => {
     const fav = document.createElement('link');
@@ -24,6 +25,12 @@ export default function Layout({ children }) {
     }, 30000);
     return () => clearInterval(id);
   }, [setTicker]);
+
+  const logout = () => {
+    clearUser();
+    try { localStorage.removeItem('gpt_token_v2'); } catch {}
+    window.location.href = '/#/';
+  };
 
   return (
     <>
@@ -57,28 +64,32 @@ export default function Layout({ children }) {
             <i className="fas fa-comments" /><span>Chat</span>
           </button>
         </nav>
-        <div className="tn-right">
+        <div className="tn-right desktop-only">
           <div className="pill" title="Your diamonds">
             <i className="fas fa-gem" /><span>{me ? (me.diamonds || 0).toLocaleString() : '0'}</span>
           </div>
           {me ? (
             <>
-              <button className="btn light sm" onClick={() => navigate('/profile')}>
-                <span className="mini-av">{me.username.charAt(0).toUpperCase()}</span>
-                {me.username}
-              </button>
-              <button
-                type="button"
-                className="btn light sm"
-                onClick={() => {
-                  try { localStorage.clear(); } catch {}
-                  try { sessionStorage.setItem('justLoggedOut', '1'); } catch {}
-                  window.location.href = '/#/logout';
-                  window.location.reload();
-                }}
-              >
-                Logout
-              </button>
+              <div style={{ position: 'relative' }}>
+                <button className="btn light sm" onClick={() => setUserMenu(v => !v)}>
+                  <span className="mini-av">{me.username.charAt(0).toUpperCase()}</span>
+                  {me.username}
+                </button>
+                {userMenu && (
+                  <div className="user-dd">
+                    <div className="dd-lab">On hold</div>
+                    <div className="dd-val"><i className="fas fa-lock" /> {(me.holdBalance || 0).toLocaleString()}</div>
+                    <div className="dd-note">Releases after 30 days</div>
+                    <hr />
+                    <button className="btn light sm block" onClick={() => { setUserMenu(false); navigate('/profile'); }}>Profile</button>
+                  </div>
+                )}
+              </div>
+              <button type="button" className="btn light sm" onClick={() => {
+                try { localStorage.clear(); } catch {}
+                try { sessionStorage.clear(); } catch {}
+                window.location.href = '/#/?logout=1';
+              }}>Logout</button>
             </>
           ) : (
             <button className="btn light sm" onClick={() => document.getElementById('auth-trigger')?.click()}>
@@ -88,9 +99,51 @@ export default function Layout({ children }) {
         </div>
       </header>
 
+      {/* Mobile bar under header */}
+      <div className="mobile-bar">
+        <div className="pill"><i className="fas fa-gem" /><span>{me ? (me.diamonds || 0).toLocaleString() : '0'}</span></div>
+        {me ? (
+          <>
+            <div style={{ position: 'relative' }}>
+              <button className="btn light sm" onClick={() => setUserMenu(v => !v)}>
+                <span className="mini-av">{me.username.charAt(0).toUpperCase()}</span>
+              </button>
+              {userMenu && (
+                <div className="user-dd">
+                  <div className="dd-lab">On hold</div>
+                  <div className="dd-val"><i className="fas fa-lock" /> {(me.holdBalance || 0).toLocaleString()}</div>
+                  <div className="dd-note">Releases after 30 days</div>
+                  <hr />
+                  <button className="btn light sm block" onClick={() => { setUserMenu(false); navigate('/profile'); }}>Profile</button>
+                </div>
+              )}
+            </div>
+            <button type="button" className="btn light sm" onClick={() => {
+              try { localStorage.clear(); } catch {}
+              try { sessionStorage.clear(); } catch {}
+              window.location.href = '/#/?logout=1';
+            }}>Logout</button>
+          </>
+        ) : (
+          <button className="btn light sm" onClick={() => document.getElementById('auth-trigger')?.click()}>Log in</button>
+        )}
+      </div>
+
       <div className="app">
         <main className="main">
-          <div id="tickerBox" />
+          {ticker && ticker.length > 0 && (
+            <div className="ticker">
+              <div className="ticker-track">
+                {ticker.concat(ticker).map((t, i) => (
+                  <div key={i} className="tk">
+                    <span className="tk-av">{(t.username || '?').charAt(0).toUpperCase()}</span>
+                    <span className="tk-name">{t.username}</span>
+                    <span className="tk-amt">{t.detail || t.action}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           {children}
           <footer className="site-footer">
             <div className="links">
