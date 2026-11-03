@@ -122,6 +122,36 @@ export default function Profile() {
         </p>
       </div>
 
+      <h2 className="sec-title" style={{ marginTop: 24 }}>Send points</h2>
+      <div className="card">
+        <p className="muted" style={{ marginBottom: 12, fontSize: 13 }}>
+          Level 3+ and 1,000+ balance required. Sender pays a 3% fee.
+        </p>
+        {(me.level || 1) < 3 || (me.diamonds || 0) < 1000 ? (
+          <p className="muted">You need level 3 and at least 1,000 diamonds to send.</p>
+        ) : (
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+            <input className="input" id="sendTo" placeholder="Username" style={{ maxWidth: 160 }} />
+            <input className="input" id="sendAmt" type="number" min="1" placeholder="Amount" style={{ maxWidth: 120 }} />
+            <button className="btn sm" onClick={async () => {
+              const to = document.getElementById('sendTo').value.trim();
+              const amt = Number(document.getElementById('sendAmt').value);
+              if (!to || !amt || amt <= 0) return alert('Enter username and amount');
+              const fee = Math.ceil(amt * 0.03);
+              const total = amt + fee;
+              if ((me.diamonds || 0) < total) return alert(`Need ${total} (including ${fee} fee)`);
+              if (!confirm(`Send ${amt} to ${to}? Fee: ${fee}. Total: ${total}`)) return;
+              const r = await api('transferPoints', me.id, to, amt);
+              if (r?.success) {
+                alert(`Sent ${amt} to ${to}. Fee: ${fee}`);
+                if (r.user) setUser(r.user);
+                refreshData();
+              } else alert(r?.error || 'Failed');
+            }}>Send</button>
+          </div>
+        )}
+      </div>
+
       <h2 className="sec-title" style={{ marginTop: 24 }}>Account</h2>
       <div className="card">
         <div className="act-row">
