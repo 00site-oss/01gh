@@ -46,16 +46,38 @@ export default function Admin() {
       </div>
       <div className="card">
         {tab === 'cashouts' && (
-          data.pendingCashouts.length ? data.pendingCashouts.map(c => (
-            <div key={c.id} className="list-row">
-              <div className="grow">
-                <strong>{c.rewardTitle}</strong> · ${c.amount}
-                <div className="sub">{c.username} · {c.cost} diamonds</div>
+          data.pendingCashouts.length ? data.pendingCashouts.map(c => {
+            let info = {};
+            try { info = typeof c.deliveryInfo === 'string' ? JSON.parse(c.deliveryInfo) : (c.deliveryInfo || {}); } catch {}
+            const addr = info.address || info.wallet || info.ltc || '';
+            const isCrypto = /ltc|btc|eth|crypto|doge/i.test(c.rewardTitle || '');
+            return (
+              <div key={c.id} className="list-row" style={{ flexWrap: 'wrap', gap: 8 }}>
+                <div className="grow">
+                  <strong>{c.rewardTitle}</strong> · ${c.amount}
+                  <div className="sub">{c.username} · {c.cost} diamonds</div>
+                  {addr && <div className="sub" style={{ wordBreak: 'break-all' }}>{addr}</div>}
+                </div>
+                {isCrypto && addr && (
+                  <img
+                    alt="QR"
+                    width={80}
+                    height={80}
+                    style={{ borderRadius: 8, background: '#fff', padding: 4 }}
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(addr)}`}
+                  />
+                )}
+                {isCrypto && (
+                  <input className="input" id={`tx-${c.id}`} placeholder="Paste tx hash" style={{ maxWidth: 220 }} />
+                )}
+                <button className="btn sm green" onClick={() => {
+                  const tx = isCrypto ? (document.getElementById(`tx-${c.id}`)?.value || '') : '';
+                  doAction('adminUpdateCashout', [c.id, 'approved', tx], 'Approved');
+                }}>Approve</button>
+                <button className="btn sm red" onClick={() => doAction('adminUpdateCashout', [c.id, 'rejected', ''], 'Rejected')}>Reject</button>
               </div>
-              <button className="btn sm green" onClick={() => doAction('adminUpdateCashout', [c.id, 'approved', ''], 'Approved')}>Approve</button>
-              <button className="btn sm red" onClick={() => doAction('adminUpdateCashout', [c.id, 'rejected', ''], 'Rejected')}>Reject</button>
-            </div>
-          )) : <div className="empty">All caught up.</div>
+            );
+          }) : <div className="empty">All caught up.</div>
         )}
 
         {tab === 'users' && (
@@ -110,6 +132,7 @@ export default function Admin() {
                 <button className={`btn sm ${String(x.status).toLowerCase() === 'active' ? 'light' : 'green'}`} onClick={() => doAction('adminToggleReward', [x.id, String(x.status).toLowerCase() !== 'active'], 'Updated')}>
                   {String(x.status).toLowerCase() === 'active' ? 'Disable' : 'Enable'}
                 </button>
+                <button className="btn sm red" onClick={() => { if (confirm('Delete this reward?')) doAction('adminDeleteReward', [x.id], 'Deleted'); }}>Delete</button>
               </div>
             ))}
           </>
@@ -117,12 +140,11 @@ export default function Admin() {
 
         {tab === 'walls' && (
           <>
-            <div className="det" style={{ marginBottom: 16 }}>
-              <label className="l">Your web app URL</label>
-              <div className="inline-form" style={{ margin: 0 }}>
-                <input className="input mono" value={execUrl} onChange={e => setExecUrl(e.target.value)} placeholder="https://script.google.com/macros/s/.../exec" />
-                <button className="btn sm green" onClick={() => { localStorage.setItem('gpt_exec_url', execUrl); alert('Saved'); }}>Save</button>
-              </div>
+            <div className="inline-form">
+              <input className="input" id="nwN" placeholder="Name (Lootably)" />
+              <input className="input" id="nwU" placeholder="URL template with {id}" />
+              <input className="input w80" id="nwM" type="number" placeholder="Min diamonds" defaultValue="0" />
+              <button className="btn sm green" onClick={() => doAction('adminSaveOfferwall', [{ name: document.getElementById('nwN').value, urlTemplate: document.getElementById('nwU').value, minDiamonds: document.getElementById('nwM').value }], 'Added')}>Add</button>
             </div>
             {data.offerwalls.map(o => (
               <div key={o.id} className="list-row">
@@ -130,6 +152,7 @@ export default function Admin() {
                 <button className={`btn sm ${o.enabled ? 'light' : 'green'}`} onClick={() => doAction('adminUpdateOfferwall', [o.id, !o.enabled, null], 'Updated')}>
                   {o.enabled ? 'Disable' : 'Enable'}
                 </button>
+                <button className="btn sm red" onClick={() => { if (confirm('Delete this offerwall?')) doAction('adminDeleteOfferwall', [o.id], 'Deleted'); }}>Delete</button>
               </div>
             ))}
           </>
@@ -143,6 +166,7 @@ export default function Admin() {
                 const reply = prompt('Reply:');
                 if (reply) doAction('adminReplySupport', [s.id, reply], 'Sent');
               }}>Reply</button>
+              <button className="btn sm light" onClick={() => doAction('adminCloseSupport', [s.id], 'Closed')}>Close</button>
             </div>
           )) : <div className="empty">No support messages.</div>
         )}
