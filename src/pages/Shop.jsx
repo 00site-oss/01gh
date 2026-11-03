@@ -32,17 +32,12 @@ export default function Shop() {
 
   return (
     <>
-      {!canOut && (
-        <div className="policy">
-          <i className="fas fa-lock" /> Cashouts locked — inactivity rate is <strong>{rate}%</strong>. Cover down to 2.5% (still need ~{toCover}%).
-        </div>
-      )}
       <div className="shop-head">
         <div>
           <div className="muted" style={{ fontWeight: 600 }}>Your available balance</div>
           <div className="shop-bal"><i className="fas fa-gem" />{bal.toLocaleString()}</div>
         </div>
-        <p className="muted">Rewards you can afford come first.{canOut ? '' : ' Cashout stays locked until rate ≤ 2.5%.'}</p>
+        <p className="muted">Rewards you can afford come first.</p>
       </div>
       <div className="shop-grid">
         {items.map(it => {
@@ -60,8 +55,8 @@ export default function Shop() {
               </div>
               <div className="bar"><div style={{ width: `${pct}%`, background: can ? 'var(--green)' : undefined }} /></div>
               <div className="prog">{can ? 'Ready to redeem' : `${(it.cost - bal).toLocaleString()} more diamonds to go`}</div>
-              <button className={`btn block${can && canOut ? ' green' : ''}`} disabled={!can || !canOut} onClick={() => setPick(it)}>
-                {!canOut ? 'Cashout locked' : can ? 'Redeem' : 'Not enough diamonds'}
+              <button className={`btn block${can ? ' green' : ''}`} disabled={!can} onClick={() => setPick(it)}>
+                {can ? 'Redeem' : 'Not enough diamonds'}
               </button>
             </div>
           );
