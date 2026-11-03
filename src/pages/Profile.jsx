@@ -79,47 +79,10 @@ export default function Profile() {
             <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Level</div>
           </div>
           <div style={{ background: 'rgba(255,255,255,.04)', borderRadius: 12, padding: '14px 10px', textAlign: 'center' }}>
-            <div style={{ font: '700 20px Space Grotesk,system-ui' }}>{rate}%</div>
-            <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Rate</div>
-          </div>
-          <div style={{ background: 'rgba(255,255,255,.04)', borderRadius: 12, padding: '14px 10px', textAlign: 'center' }}>
             <div style={{ font: '700 20px Space Grotesk,system-ui' }}>{days}</div>
             <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Days</div>
           </div>
         </div>
-      </div>
-
-      <h2 className="sec-title" style={{ marginTop: 24 }}>Cover inactivity rate</h2>
-      <div className="card">
-        <p className="muted" style={{ marginBottom: 12, fontSize: 13 }}>
-          1% daily coverage = 500 diamonds. Your rate is <strong>{rate}%</strong>.
-          {toCover > 0 ? ` Cover ${toCover}% more to unlock cashouts.` : ' Cashouts are unlocked.'}
-        </p>
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          <input
-            className="input"
-            id="coverPct"
-            type="number"
-            step="0.1"
-            min="0.1"
-            max={toCover || 10}
-            placeholder="Percent to cover"
-            style={{ maxWidth: 140 }}
-          />
-          <button className="btn sm" onClick={async () => {
-            const pct = Number(document.getElementById('coverPct').value);
-            if (!pct || pct <= 0) return alert('Enter a percent');
-            const r = await api('convertBalanceToCoverage', me.id, pct);
-            if (r?.success) {
-              alert(`Covered ${r.covered}%. New balance: ${r.newBalance}`);
-              if (r.user) setUser(r.user);
-              refreshData();
-            } else alert(r?.error || 'Failed');
-          }}>Cover</button>
-        </div>
-        <p className="muted" style={{ marginTop: 8, fontSize: 12 }}>
-          Cost: {500} diamonds per 1%. You have {(me.diamonds || 0).toLocaleString()} available.
-        </p>
       </div>
 
       <h2 className="sec-title" style={{ marginTop: 24 }}>Send points</h2>
