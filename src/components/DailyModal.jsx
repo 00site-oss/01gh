@@ -44,10 +44,16 @@ export default function DailyModal({ onClose }) {
           {st ? (
             <>
               <div className="dm-box">
-                <div className="dm-sub"><span className="tag pending">Daily reward</span><span className="tag">Level {st.level}</span></div>
-                <button className="btn block" style={{ marginTop: 16 }} onClick={claim} disabled={!st.canClaim}>
-                  {st.canClaim ? `Claim ${st.reward}` : 'Not ready'}
-                </button>
+                <div className="dm-sub"><span className="tag pending">Daily reward</span><span className="tag">{me?.rank || 'None'}</span></div>
+                {(me?.rank === 'Silver' || me?.rank === 'Gold' || me?.rank === 'Platinum') ? (
+                  <button className="btn block" style={{ marginTop: 16 }} onClick={claim} disabled={!st.canClaim}>
+                    {st.canClaim ? `Claim ${st.reward}` : 'Not ready'}
+                  </button>
+                ) : (
+                  <div style={{ marginTop: 16, padding: 12, textAlign: 'center', color: 'var(--muted)', background: 'var(--raised)', borderRadius: 10 }}>
+                    <i className="fas fa-lock" /> Silver rank required
+                  </div>
+                )}
                 {msg && <div className="dm-msg">{msg}</div>}
               </div>
               <div className="dm-box">
