@@ -2,7 +2,7 @@ export default function Help() {
   const steps = [
     ['fa-right-to-bracket', 'var(--yellow)', 'Log in', 'Use the account your administrator created for you.'],
     ['fa-bolt', 'var(--orange)', 'Earn', 'Open an offerwall and finish surveys or offers. Diamonds land in your balance automatically.'],
-    ['fa-calendar-day', 'var(--green)', 'Check in daily', 'Check in once per day for +5 rank points. Each credited task adds +2.5.'],
+    ['fa-calendar-day', 'var(--green)', 'Daily reward', 'Silver rank and above can claim free diamonds once every 24 hours from 01GH Rewards.'],
     ['fa-trophy', 'var(--orange)', 'Ranks', 'Silver at 55 pts, Gold at 75, Platinum at 85. Gold and Platinum can send points to other users.'],
     ['fa-paper-plane', 'var(--blue)', 'Send points', 'Gold+ users can send diamonds to others. A 3% fee is charged to the sender.'],
     ['fa-bag-shopping', 'var(--green)', 'Redeem', 'Pick a reward in Rewards. An admin reviews your request. For crypto, scan the QR and the admin pastes the tx hash.'],
