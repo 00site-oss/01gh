@@ -36,7 +36,7 @@ export default function Admin() {
 
   return (
     <>
-      <div className="policy"><i className="fas fa-circle-info" /> The verified tick is granted automatically at level 10. Admins cannot grant or remove it.</div>
+      <div className="policy"><i className="fas fa-circle-info" /> Rank is based on activity score. Gold+ can send points.</div>
       <div className="tabs">
         {tabs.map(([id, label, ct]) => (
           <button key={id} className={`tab${tab === id ? ' active' : ''}`} onClick={() => setTab(id)}>
@@ -90,7 +90,7 @@ export default function Admin() {
             </div>
             {data.users.map(u => (
               <div key={u.id} className="list-row">
-                <div className="grow"><strong>{u.username}</strong><div className="sub">Level {u.level} · {u.totalEarned} earned</div></div>
+                <div className="grow"><strong>{u.username}</strong><div className="sub">{u.rank || 'None'} · {u.totalEarned} earned</div></div>
                 <input className="input w80" type="number" defaultValue={u.diamonds} id={`bal-${u.id}`} />
                 <button className="btn sm violet" onClick={() => doAction('adminSetDiamonds', [u.id, document.getElementById(`bal-${u.id}`).value], 'Updated')}>Save</button>
               </div>
