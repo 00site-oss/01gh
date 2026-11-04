@@ -75,11 +75,31 @@ export default function Chat({ open, onClose }) {
         {tab === 'chat' && (
           messages.length ? messages.map((x, i) => (
             <div key={i} className={`msg${me && x.username === me.username ? ' mine' : ''}`}>
-              <div className="msg-av" style={{ background: `hsl(${Math.abs(x.username.charCodeAt(0) * 10) % 360},60%,45%)` }}>
+              <div className="msg-av" style={{ background: `hsl(${Math.abs(x.username.charCodeAt(0) * 10) % 360},60%,45%)`, position: 'relative' }}>
                 {(x.username || '?').charAt(0).toUpperCase()}
+                {x.rank && x.rank !== 'None' && (
+                  <span style={{
+                    position: 'absolute', bottom: -2, right: -2,
+                    width: 14, height: 14, borderRadius: 4,
+                    background: x.rank === 'Platinum' ? '#38bdf8' : x.rank === 'Gold' ? '#ff8a2e' : '#2ee59d',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 8, color: '#fff'
+                  }}>
+                    <i className={`fas ${x.rank === 'Platinum' ? 'fa-gem' : x.rank === 'Gold' ? 'fa-crown' : 'fa-star'}`} />
+                  </span>
+                )}
               </div>
               <div className="msg-main">
-                <div className="who">{x.username}<span className="ts">{x.timestamp}</span></div>
+                <div className="who">
+                  {x.username}
+                  {x.rank && x.rank !== 'None' && (
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, marginLeft: 4,
+                      color: x.rank === 'Platinum' ? '#38bdf8' : x.rank === 'Gold' ? '#ff8a2e' : '#2ee59d'
+                    }}>{x.rank}</span>
+                  )}
+                  <span className="ts">{x.timestamp}</span>
+                </div>
                 <div className="tx">{x.message}</div>
               </div>
             </div>
