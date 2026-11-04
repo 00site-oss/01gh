@@ -2,6 +2,43 @@ import { useEffect, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { api } from '../utils/api';
 
+function RankCard() {
+  const { me } = useApp();
+  const [info, setInfo] = useState(null);
+  const [busy, setBusy] = useState(false);
+
+  const load = () => api('getRankInfo', me.id).then(setInfo).catch(() => {});
+  useEffect(() => { if (me) load(); }, [me]);
+
+  if (!info) return <div className="skel" />;
+
+  const doCheckin = async () => {
+    setBusy(true);
+    try {
+      const r = await api('checkIn', me.id);
+      if (r?.success) load();
+      else alert(r?.error || 'Failed');
+    } finally { setBusy(false); }
+  };
+
+  return (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+        <div>
+          <div style={{ font: '700 22px Space Grotesk,system-ui' }}>{info.rank}</div>
+          <div className="muted" style={{ fontSize: 13 }}>{info.score} pts · {info.toNext} to next</div>
+        </div>
+        <button className="btn sm" onClick={doCheckin} disabled={busy}>{busy ? '...' : 'Check in +5'}</button>
+      </div>
+      <div className="bar"><div style={{ width: `${Math.min(100, (info.score / info.nextRankAt) * 100)}%` }} /></div>
+      <div className="muted" style={{ fontSize: 12, marginTop: 8 }}>
+        Daily: check-in +5 · 2 tasks +5 · miss window −10
+        {info.penaltyDeadline && <div>Next check-in by {new Date(info.penaltyDeadline).toLocaleString()}</div>}
+      </div>
+    </div>
+  );
+}
+
 export default function Profile() {
   const { me, setUser, clearUser, refreshData } = useApp();
   const [hist, setHist] = useState(null);
@@ -85,13 +122,18 @@ export default function Profile() {
         </div>
       </div>
 
+      <h2 className="sec-title" style={{ marginTop: 24 }}>Rank</h2>
+      <div className="card">
+        <RankCard />
+      </div>
+
       <h2 className="sec-title" style={{ marginTop: 24 }}>Send points</h2>
       <div className="card">
         <p className="muted" style={{ marginBottom: 12, fontSize: 13 }}>
-          Level 3+ and 1,000+ balance required. Sender pays a 3% fee.
+          Gold rank required. Sender pays a 3% fee.
         </p>
-        {(me.level || 1) < 3 || (me.diamonds || 0) < 1000 ? (
-          <p className="muted">You need level 3 and at least 1,000 diamonds to send.</p>
+        {(me.rank !== 'Gold' && me.rank !== 'Platinum') ? (
+          <p className="muted">You need Gold rank to send points.</p>
         ) : (
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
             <input className="input" id="sendTo" placeholder="Username" style={{ maxWidth: 160 }} />
