@@ -114,11 +114,11 @@ export default function Earn() {
 
       {showDaily && <DailyModal onClose={() => setShowDaily(false)} />}
       {wallUrl && (
-        <div className="overlay on" id="wallOv">
-          <div className="wall-frame">
+        <div className="overlay on" id="wallOv" onClick={() => setWallUrl('')}>
+          <div className="wall-frame" onClick={e => e.stopPropagation()}>
             <div className="wall-frame-h">
               <strong>{wallTitle}</strong>
-              <button className="x" onClick={() => setWallUrl('')}><i className="fas fa-xmark" /></button>
+              <button className="x" onClick={() => setWallUrl('')} style={{ zIndex: 10, position: 'relative' }}><i className="fas fa-xmark" /></button>
             </div>
             <iframe id="wallFrame" title="Offerwall" src={wallUrl} allow="clipboard-write; payment" />
           </div>
