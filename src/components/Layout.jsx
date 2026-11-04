@@ -87,9 +87,14 @@ export default function Layout({ children }) {
                           width: `${Math.min(100, ((me.rankScore?.score || 0) / 85) * 100)}%`,
                           background: 'linear-gradient(90deg,#34d399,#ffc14d)'
                         }} />
+                        <div style={{ position: 'absolute', left: '64.7%', top: -3, width: 12, height: 12, borderRadius: '50%', background: 'var(--raised)', border: '2px solid var(--muted)', transform: 'translateX(-50%)' }} />
+                        <div style={{ position: 'absolute', left: '88.2%', top: -3, width: 12, height: 12, borderRadius: '50%', background: 'var(--raised)', border: '2px solid var(--muted)', transform: 'translateX(-50%)' }} />
+                        <div style={{ position: 'absolute', left: '100%', top: -3, width: 12, height: 12, borderRadius: '50%', background: 'var(--raised)', border: '2px solid var(--muted)', transform: 'translateX(-50%)' }} />
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'var(--muted)', marginTop: 4, padding: '0 4px' }}>
-                        <span>55</span><span>75</span><span>85</span>
+                      <div style={{ position: 'relative', fontSize: 10, color: 'var(--muted)', marginTop: 6, height: 14 }}>
+                        <span style={{ position: 'absolute', left: '64.7%', transform: 'translateX(-50%)' }}>55</span>
+                        <span style={{ position: 'absolute', left: '88.2%', transform: 'translateX(-50%)' }}>75</span>
+                        <span style={{ position: 'absolute', right: 0 }}>85</span>
                       </div>
                     </div>
                   </div>
