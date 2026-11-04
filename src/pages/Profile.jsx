@@ -26,13 +26,23 @@ function RankCard() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
         <div>
           <div style={{ font: '700 22px Space Grotesk,system-ui' }}>{info.rank}</div>
-          <div className="muted" style={{ fontSize: 13 }}>{info.score} pts · {info.toNext} to next</div>
+          <div className="muted" style={{ fontSize: 13 }}>
+            {info.recovering
+              ? `Recovery: ${info.debt} pts debt`
+              : `${info.score} pts · ${info.toNext} to next`}
+          </div>
         </div>
         <button className="btn sm" onClick={doCheckin} disabled={busy}>{busy ? '...' : 'Check in +5'}</button>
       </div>
-      <div className="bar"><div style={{ width: `${Math.min(100, (info.score / info.nextRankAt) * 100)}%` }} /></div>
+      {info.recovering ? (
+        <div className="bar"><div style={{ width: `${Math.min(100, ((info.rules.debtPerDay * 13 - info.debt) / (info.rules.debtPerDay * 13)) * 100)}%`, background: 'var(--yellow)' }} /></div>
+      ) : (
+        <div className="bar"><div style={{ width: `${Math.min(100, (info.score / info.nextRankAt) * 100)}%` }} /></div>
+      )}
       <div className="muted" style={{ fontSize: 12, marginTop: 8 }}>
-        Daily: check-in +5 · 2 tasks +5 · miss window −10
+        {info.recovering
+          ? 'Clear inactivity debt before earning rank points. Check-in +5, task +2.5.'
+          : 'Daily: check-in +5 · task +2.5'}
         {info.penaltyDeadline && <div>Next check-in by {new Date(info.penaltyDeadline).toLocaleString()}</div>}
       </div>
     </div>
@@ -112,8 +122,8 @@ export default function Profile() {
             <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Earned</div>
           </div>
           <div style={{ background: 'rgba(255,255,255,.04)', borderRadius: 12, padding: '14px 10px', textAlign: 'center' }}>
-            <div style={{ font: '700 20px Space Grotesk,system-ui' }}>{me.level || 1}</div>
-            <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Level</div>
+            <div style={{ font: '700 20px Space Grotesk,system-ui' }}>{me.rank || 'None'}</div>
+            <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Rank</div>
           </div>
           <div style={{ background: 'rgba(255,255,255,.04)', borderRadius: 12, padding: '14px 10px', textAlign: 'center' }}>
             <div style={{ font: '700 20px Space Grotesk,system-ui' }}>{days}</div>
