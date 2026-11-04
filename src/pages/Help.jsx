@@ -2,11 +2,12 @@ export default function Help() {
   const steps = [
     ['fa-right-to-bracket', 'var(--yellow)', 'Log in', 'Use the account your administrator created for you.'],
     ['fa-bolt', 'var(--orange)', 'Earn', 'Open an offerwall and finish surveys or offers. Diamonds land in your balance automatically.'],
-    ['fa-calendar-day', 'var(--green)', 'Claim your daily reward', 'Open 01GH Rewards on the Earn page and claim free diamonds once every 24 hours.'],
-    ['fa-arrow-up', 'var(--blue)', 'Level up', 'Every 1,000 points is a new level. Reach level 10 for the blue verified tick, automatically.'],
-    ['fa-bag-shopping', 'var(--green)', 'Redeem', 'Pick a reward in Rewards. An admin reviews your request. Crypto rewards carry a 5% fee.'],
-    ['fa-gift', 'var(--yellow)', 'Use a promo code', 'Got a code? Open 01GH Rewards on the Earn page and enter it in the promo code box for free diamonds.'],
-    ['fa-clock', 'var(--muted)', 'Inactivity rate & cashouts', 'Rate = daily% × days since you joined (daily starts at 2.5%). Every 500 pts earned lowers the total by 1%. Convert 500 available diamonds to cut the daily rate by 1%. Cashouts stay locked until total rate is 2.5% or lower.']
+    ['fa-calendar-day', 'var(--green)', 'Check in daily', 'Check in once per day for +5 rank points. Each credited task adds +2.5.'],
+    ['fa-trophy', 'var(--orange)', 'Ranks', 'Silver at 55 pts, Gold at 75, Platinum at 85. Gold and Platinum can send points to other users.'],
+    ['fa-paper-plane', 'var(--blue)', 'Send points', 'Gold+ users can send diamonds to others. A 3% fee is charged to the sender.'],
+    ['fa-bag-shopping', 'var(--green)', 'Redeem', 'Pick a reward in Rewards. An admin reviews your request. For crypto, scan the QR and the admin pastes the tx hash.'],
+    ['fa-gift', 'var(--yellow)', 'Use a promo code', 'Got a code? Open 01GH Rewards on the Earn page and enter it for free diamonds.'],
+    ['fa-clock', 'var(--muted)', 'Inactivity recovery', 'Inactive days create a debt (10 pts per day). Check-ins and tasks pay it down. You can also cover it with diamonds (100% fee per day). Rank progress starts after debt is cleared.']
   ];
 
   return (
