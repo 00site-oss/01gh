@@ -39,12 +39,26 @@ function RankCard() {
       ) : (
         <div className="bar"><div style={{ width: `${Math.min(100, (info.score / info.nextRankAt) * 100)}%` }} /></div>
       )}
-      <div className="muted" style={{ fontSize: 12, marginTop: 8 }}>
-        {info.recovering
-          ? 'Clear inactivity debt before earning rank points. Check-in +5, task +2.5.'
-          : 'Daily: check-in +5 · task +2.5'}
-        {info.penaltyDeadline && <div>Next check-in by {new Date(info.penaltyDeadline).toLocaleString()}</div>}
-      </div>
+      {info.debt > 0 && (
+        <div style={{ marginTop: 12, padding: 12, background: 'rgba(255,176,32,.1)', border: '1px solid rgba(255,176,32,.3)', borderRadius: 10 }}>
+          <div style={{ fontWeight: 700, marginBottom: 4 }}>Cover inactivity</div>
+          <div style={{ fontSize: 13, marginBottom: 8 }}>
+            Debt: <strong>{info.debt} pts</strong> · Cost: <strong>{info.coverCost.toLocaleString()} diamonds</strong>
+            <div className="muted" style={{ fontSize: 12 }}>{info.days} days × 100% fee</div>
+          </div>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <input className="input" id="coverAmt" type="number" min="1" max={info.debt} placeholder={`Pts to cover`} style={{ maxWidth: 120 }} />
+            <button className="btn sm" onClick={async () => {
+              const pts = Number(document.getElementById('coverAmt').value) || info.debt;
+              const cost = Math.ceil(pts * (1 + (info.days || 0)));
+              if (!confirm(`Cover ${pts} pts for ${cost} diamonds?`)) return;
+              const r = await api('coverInactivityDebt', me.id, pts);
+              if (r?.success) load();
+              else alert(r?.error || 'Failed');
+            }}>Cover</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
