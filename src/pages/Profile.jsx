@@ -151,7 +151,7 @@ export default function Profile() {
             <i className="fas fa-triangle-exclamation" /> Account closing soon
           </div>
           <p className="muted" style={{ fontSize: 13, marginBottom: 10 }}>
-            {15 - days} day(s) left. Confirm activity to keep your account. If you confirm but do nothing today, it still closes.
+            {15 - days} day(s) left. Confirm and reach 25 overall points to keep your account.
           </p>
           <button className="btn sm red" onClick={async () => {
             const r = await api('confirmActivity', me.id);
