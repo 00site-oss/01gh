@@ -78,6 +78,20 @@ export default function Layout({ children }) {
                 {userMenu && (
                   <div className="user-dd">
                     <button className="btn light sm block" onClick={() => { setUserMenu(false); navigate('/profile'); }}>Profile</button>
+                    <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--line)' }}>
+                      <div style={{ font: '700 16px Syne,system-ui', textAlign: 'center' }}>{me.rank || 'None'}</div>
+                      <div style={{ fontSize: 12, color: 'var(--muted)', textAlign: 'center', marginBottom: 8 }}>Overall {me.rankScore?.score || 0}</div>
+                      <div style={{ position: 'relative', height: 6, background: 'var(--raised2)', borderRadius: 99, margin: '0 8px' }}>
+                        <div style={{
+                          position: 'absolute', left: 0, top: 0, bottom: 0, borderRadius: 99,
+                          width: `${Math.min(100, ((me.rankScore?.score || 0) / 85) * 100)}%`,
+                          background: 'linear-gradient(90deg,#34d399,#ffc14d)'
+                        }} />
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'var(--muted)', marginTop: 4, padding: '0 4px' }}>
+                        <span>55</span><span>75</span><span>85</span>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
@@ -107,6 +121,10 @@ export default function Layout({ children }) {
               {userMenu && (
                 <div className="user-dd" style={{ left: 0, right: 'auto' }}>
                   <button className="btn light sm block" onClick={() => { setUserMenu(false); navigate('/profile'); }}>Profile</button>
+                  <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--line)' }}>
+                    <div style={{ font: '700 14px Syne,system-ui', textAlign: 'center' }}>{me.rank || 'None'}</div>
+                    <div style={{ fontSize: 11, color: 'var(--muted)', textAlign: 'center' }}>{me.rankScore?.score || 0} pts</div>
+                  </div>
                 </div>
               )}
             </div>
