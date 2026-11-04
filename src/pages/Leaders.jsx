@@ -35,7 +35,7 @@ export default function Leaders() {
           <div key={u.username} className={`lrow${me && me.username === u.username ? ' me' : ''}`}>
             <span className="rk">{i + start}</span>
             <strong>{u.username}{me && me.username === u.username && <span className="tag pending">you</span>}</strong>
-            <span className="muted" style={{ fontSize: 13 }}>Level {u.level || 1}</span>
+            <span className="muted" style={{ fontSize: 13 }}>{u.rank || 'None'}</span>
             <span className="d"><i className="fas fa-gem" />{u.diamonds.toLocaleString()}</span>
           </div>
         ))}
