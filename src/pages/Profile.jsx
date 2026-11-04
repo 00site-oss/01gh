@@ -59,6 +59,9 @@ function RankCard() {
           </div>
         </div>
       )}
+      <div className="muted" style={{ fontSize: 12, marginTop: 10 }}>
+        Silver: daily reward · Gold: send points · Platinum: reduced fees + exclusives
+      </div>
     </div>
   );
 }
@@ -141,6 +144,22 @@ export default function Profile() {
           </div>
         </div>
       </div>
+
+      {days >= 13 && days < 15 && (
+        <div className="card" style={{ marginTop: 16, borderColor: 'var(--red)', background: 'rgba(248,113,113,.08)' }}>
+          <div style={{ fontWeight: 700, color: 'var(--red)', marginBottom: 6 }}>
+            <i className="fas fa-triangle-exclamation" /> Account closing soon
+          </div>
+          <p className="muted" style={{ fontSize: 13, marginBottom: 10 }}>
+            {15 - days} day(s) left. Confirm activity to keep your account. If you confirm but do nothing today, it still closes.
+          </p>
+          <button className="btn sm red" onClick={async () => {
+            const r = await api('confirmActivity', me.id);
+            if (r?.success) { alert(r.message); refreshData(); }
+            else alert(r?.error || 'Failed');
+          }}>Confirm activity</button>
+        </div>
+      )}
 
       <h2 className="sec-title" style={{ marginTop: 24 }}>Rank</h2>
       <div className="card">
