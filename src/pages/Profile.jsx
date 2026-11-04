@@ -128,10 +128,6 @@ export default function Profile() {
             <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Available</div>
           </div>
           <div style={{ background: 'rgba(255,255,255,.04)', borderRadius: 12, padding: '14px 10px', textAlign: 'center' }}>
-            <div style={{ font: '700 20px Space Grotesk,system-ui' }}>{hold.toLocaleString()}</div>
-            <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>On hold</div>
-          </div>
-          <div style={{ background: 'rgba(255,255,255,.04)', borderRadius: 12, padding: '14px 10px', textAlign: 'center' }}>
             <div style={{ font: '700 20px Space Grotesk,system-ui' }}>{(me.totalEarned || 0).toLocaleString()}</div>
             <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>Earned</div>
           </div>
