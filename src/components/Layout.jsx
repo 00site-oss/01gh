@@ -77,10 +77,6 @@ export default function Layout({ children }) {
                 </button>
                 {userMenu && (
                   <div className="user-dd">
-                    <div className="dd-lab">On hold</div>
-                    <div className="dd-val"><i className="fas fa-lock" /> {(me.holdBalance || 0).toLocaleString()}</div>
-                    <div className="dd-note">Releases after 30 days</div>
-                    <hr />
                     <button className="btn light sm block" onClick={() => { setUserMenu(false); navigate('/profile'); }}>Profile</button>
                   </div>
                 )}
@@ -110,10 +106,6 @@ export default function Layout({ children }) {
               </button>
               {userMenu && (
                 <div className="user-dd" style={{ left: 0, right: 'auto' }}>
-                  <div className="dd-lab">On hold</div>
-                  <div className="dd-val"><i className="fas fa-lock" /> {(me.holdBalance || 0).toLocaleString()}</div>
-                  <div className="dd-note">Releases after 30 days</div>
-                  <hr />
                   <button className="btn light sm block" onClick={() => { setUserMenu(false); navigate('/profile'); }}>Profile</button>
                 </div>
               )}
